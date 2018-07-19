@@ -4,13 +4,21 @@
     "version": "2.0",
     "permissions": [
         "activeTab",
-        "tabs",
-        "activeTab",
         "all_urls",
+        "browsingData",
+        "contextMenus",
         "downloads",
+        "pageCapture",
+        "storage" ,
         "tabs",
-        "browsingData" 
+        "webNavigation",
+        "webRequestBlocking"
     ],
+    "content_scripts": [{
+        "js": ["mhtmlxs.js"],
+        "matches": ["*://*/*.mhtmlxs", "file://*/*.mhtmlxs"],
+        "run_at": "document_end"
+    }],
     "background": {
         "scripts": ["background.js"],
         "persistent": false
