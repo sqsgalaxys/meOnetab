@@ -4,12 +4,11 @@
     "version": "2.0",
     "permissions": [
         "activeTab",
-        "all_urls",
         "browsingData",
         "contextMenus",
         "downloads",
         "pageCapture",
-        "storage" ,
+        "storage",
         "tabs",
         "webNavigation",
         "webRequestBlocking"
@@ -27,7 +26,11 @@
         "default_title": "onetabEx"
     },
     "manifest_version": 2,
-
+    "icons": {
+        "128": "images/extension-icon128.png",
+        "16": "images/extension-icon16.png",
+        "48": "images/extension-icon48.png"
+    },
     "commands": {
         "close-download-bar": {
             "description": "__MSG_closeHotkey__",
@@ -35,7 +38,13 @@
                 "default": "Alt+J",
                 "mac": "Alt+J"
             }
+        },
+        "copy-current-tab-link": {
+            "description": "copy current tab link",
+            "suggested_key": {
+                "default": "Alt+C",
+                "mac": "Command+Shift+Y"
+            }
         }
     }
 }
-

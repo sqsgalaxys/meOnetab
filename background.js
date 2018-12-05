@@ -59,6 +59,40 @@ chrome.tabs.onReplaced.addListener(updateIcon);
 
 updateIcon();
 
+function copy(text) {
+    var input = document.createElement('input');
+    input.setAttribute('value', text);
+    document.body.appendChild(input);
+    input.select();
+    var result = document.execCommand('copy');
+    document.body.removeChild(input)
+    return result;
+}
+function covertLink(title,url){
+// [How do I copy to the clipboard in JavaScript? - Stack Overflow](https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript)
+    return "[" + title +"]"+"( " +url+ " \'0.0\')";
+
+}
+
+function copyMDLink(argument) {
+
+    chrome.tabs.query({
+        active: true,
+        currentWindow: true
+    }, function(tabs) {
+        // TODO:这里只会有一个 tab 吗? <09-09-18, Me> //
+        tabs.forEach(function(tab) {
+            var result_link = covertLink(tab.title,tab.url);
+            alert(result_link);
+            copy(result_link);
+        });
+    });
+    // alert(1);
+    // 写入 系统剪切板
+    copy("testExx");
+
+}
+
 chrome.commands.onCommand.addListener(function(command) {
     switch (command) {
         case 'close-download-bar':
@@ -76,22 +110,30 @@ chrome.commands.onCommand.addListener(function(command) {
                 "passwords": false,
                 "webSQL": false
             }, null);
+        case 'copy-current-tab-link': copyMDLink();
             break;
     }
 });
 
 
 // https://stackoverflow.com/questions/32718645/google-chrome-extension-add-the-tab-to-context-menu
-chrome.contextMenus.create({
-    id: "left",
-    title: "left",
-    contexts: ["all"]
-});
+// https://stackoverflow.com/questions/37000136/check-if-item-is-already-in-the-context-menu
 
-chrome.contextMenus.create({
-    id: "right",
-    title: "right",
-    contexts: ["all"]
+// Or removeAll and create all
+
+chrome.contextMenus.removeAll(function() {
+    chrome.contextMenus.create({
+        id: "left",
+        title: "left",
+        contexts: ["all"]
+    });
+
+    chrome.contextMenus.create({
+        id: "right",
+        title: "right",
+        contexts: ["all"]
+    });
+
 });
 
 function saveTabs(tabs) {}
@@ -137,8 +179,6 @@ function saveLeftRight(index, isLeft) {
         });
 
     }
-
-
 }
 
 chrome.contextMenus.onClicked.addListener(function(info, tab) {
